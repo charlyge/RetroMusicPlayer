@@ -14,8 +14,6 @@ class HomeBindingAdapter(
     val toolbar = homeBinding?.toolbar
         ?: bannerHomeBinding?.toolbar!!
     val bannerImage = bannerHomeBinding?.bannerImage
-    val userImage = homeBinding?.userImage
-        ?: bannerHomeBinding?.userImage!!
     val lastAdded = homeBinding?.homeContent?.absPlaylists?.lastAdded
         ?: bannerHomeBinding?.homeContent?.absPlaylists?.lastAdded!!
     val topPlayed = homeBinding?.homeContent?.absPlaylists?.topPlayed
@@ -26,6 +24,5 @@ class HomeBindingAdapter(
         ?: bannerHomeBinding?.homeContent?.absPlaylists?.history!!
     val recyclerView = homeBinding?.homeContent?.recyclerView
         ?: bannerHomeBinding?.homeContent?.recyclerView!!
-    val titleWelcome = homeBinding?.titleWelcome ?: bannerHomeBinding?.titleWelcome!!
     val appNameText = homeBinding?.appNameText ?: bannerHomeBinding?.appNameText!!
 }

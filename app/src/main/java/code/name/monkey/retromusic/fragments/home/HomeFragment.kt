@@ -58,8 +58,6 @@ class HomeFragment :
         mainActivity.setSupportActionBar(binding.toolbar)
         mainActivity.supportActionBar?.title = null
         setupListeners()
-        binding.titleWelcome.text = String.format("%s", PreferenceUtil.userName)
-
         enterTransition = MaterialFadeThrough().apply {
             addTarget(binding.contentContainer)
         }
@@ -73,7 +71,7 @@ class HomeFragment :
             homeAdapter.swapData(it)
         })
 
-        loadProfile()
+       // loadProfile()
         setupTitle()
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
@@ -90,7 +88,7 @@ class HomeFragment :
         binding.bannerImage?.setOnClickListener {
             findNavController().navigate(
                 R.id.user_info_fragment, null, null, FragmentNavigatorExtras(
-                    binding.userImage to "user_image"
+
                 )
             )
             reenterTransition = null
@@ -124,13 +122,6 @@ class HomeFragment :
             setSharedAxisYTransitions()
         }
 
-        binding.userImage.setOnClickListener {
-            findNavController().navigate(
-                R.id.user_info_fragment, null, null, FragmentNavigatorExtras(
-                    binding.userImage to "user_image"
-                )
-            )
-        }
     }
 
     private fun getBinding(homeBanner: Boolean, view: View): HomeBindingAdapter {
@@ -158,19 +149,19 @@ class HomeFragment :
         binding.appNameText.text = appName
     }
 
-    private fun loadProfile() {
-        binding.bannerImage?.let {
-            GlideApp.with(requireContext())
-                .asBitmap()
-                .profileBannerOptions(RetroGlideExtension.getBannerModel())
-                .load(RetroGlideExtension.getBannerModel())
-                .into(it)
-        }
-        GlideApp.with(requireActivity()).asBitmap()
-            .userProfileOptions(RetroGlideExtension.getUserModel())
-            .load(RetroGlideExtension.getUserModel())
-            .into(binding.userImage)
-    }
+//    private fun loadProfile() {
+//        binding.bannerImage?.let {
+//            GlideApp.with(requireContext())
+//                .asBitmap()
+//                .profileBannerOptions(RetroGlideExtension.getBannerModel())
+//                .load(RetroGlideExtension.getBannerModel())
+//                .into(it)
+//        }
+////        GlideApp.with(requireActivity()).asBitmap()
+////            .userProfileOptions(RetroGlideExtension.getUserModel())
+////            .load(RetroGlideExtension.getUserModel())
+////            .into(binding.userImage)
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)

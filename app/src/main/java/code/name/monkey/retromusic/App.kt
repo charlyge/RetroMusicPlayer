@@ -15,6 +15,7 @@
 package code.name.monkey.retromusic
 
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
 import code.name.monkey.appthemehelper.ThemeStore
 import code.name.monkey.appthemehelper.util.VersionUtils
@@ -22,10 +23,14 @@ import code.name.monkey.retromusic.Constants.PRO_VERSION_PRODUCT_ID
 import code.name.monkey.retromusic.appshortcuts.DynamicShortcutManager
 import com.anjlab.android.iab.v3.BillingProcessor
 import com.anjlab.android.iab.v3.PurchaseInfo
+import com.onesignal.OSPermissionSubscriptionState
+import com.onesignal.OSSubscriptionObserver
+import com.onesignal.OSSubscriptionStateChanges
+import com.onesignal.OneSignal
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-class App : Application() {
+class App : Application() , OSSubscriptionObserver {
 
     lateinit var billingProcessor: BillingProcessor
 
@@ -66,6 +71,16 @@ class App : Application() {
 
                 override fun onBillingInitialized() {}
             })
+
+        OneSignal.startInit(this)
+            .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.None)
+            .unsubscribeWhenNotificationsAreDisabled(true)
+            .init()
+
+        OneSignal.addSubscriptionObserver(this)
+
+        val status: OSPermissionSubscriptionState = OneSignal.getPermissionSubscriptionState()
+
     }
 
     override fun onTerminate() {
@@ -84,6 +99,17 @@ class App : Application() {
             return BuildConfig.DEBUG || instance?.billingProcessor!!.isPurchased(
                 PRO_VERSION_PRODUCT_ID
             )
+        }
+    }
+
+    override fun onOSSubscriptionChanged(stateChanges: OSSubscriptionStateChanges) {
+        if (!stateChanges.from.subscribed &&
+            stateChanges.to.subscribed
+        ) {
+
+            // get player ID
+            val userId: String = stateChanges.to.userId
+            Log.i("userId", "userId: $userId")
         }
     }
 }

@@ -1,3 +1,15 @@
+buildscript {
+    repositories {
+        maven { url 'https://plugins.gradle.org/m2/' }
+    }
+
+    dependencies {
+        classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.14.0'
+
+    }
+}
+
+apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -9,15 +21,22 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 31
-
+        targetSdkVersion 30
+        renderscriptTargetApi 30
+        configurations.all {
+            resolutionStrategy { force 'androidx.core:core-ktx:1.6.0' }
+        }
         renderscriptTargetApi 29//must match target sdk and build tools
         vectorDrawables.useSupportLibrary = true
 
         applicationId "code.name.monkey.retromusic"
         versionCode 10543
         versionName '5.4.0 ' + "_" + getDate()
-
+        manifestPlaceholders = [
+                onesignal_app_id  :'ddd-6d5b-4aac-9005-e0ce1b340cbe',
+                // Project number pulled from dashboard, local value is ignored.
+                onesignal_google_project_number: 'REMOTE'
+        ]
         buildConfigField("String", "GOOGLE_PLAY_LICENSING_KEY", "\"${getProperty(getProperties('../public.properties'), 'GOOGLE_PLAY_LICENSE_KEY')}\"")
     }
     signingConfigs {
@@ -156,6 +175,7 @@ dependencies {
     implementation 'com.github.AdrienPoupa:jaudiotagger:2.2.3'
     implementation 'com.anjlab.android.iab.v3:library:2.0.1'
     implementation 'com.r0adkll:slidableactivity:2.1.0'
+    implementation 'com.onesignal:OneSignal:3.16.1'
     implementation 'com.heinrichreimersoftware:material-intro:2.0.0'
     implementation 'com.github.dhaval2404:imagepicker:1.7.1'
     implementation 'me.zhanghai.android.fastscroll:library:1.1.7'

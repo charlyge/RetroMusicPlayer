@@ -108,18 +108,18 @@
                 <data android:mimeType="vnd.android.cursor.dir/audio" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.SettingsActivity" />
-        <activity android:name=".activities.tageditor.AlbumTagEditorActivity" />
-        <activity android:name=".activities.tageditor.SongTagEditorActivity" />
-        <activity android:name=".activities.SupportDevelopmentActivity" />
-        <activity android:name=".activities.LicenseActivity" />
-        <activity android:name=".activities.PurchaseActivity" />
-        <activity android:name=".activities.WhatsNewActivity" />
-        <activity android:name=".activities.bugreport.BugReportActivity" />
-        <activity android:name=".activities.ShareInstagramStory" />
-        <activity android:name=".activities.DriveModeActivity" />
-        <activity android:name=".activities.PermissionActivity" />
-        <activity android:name=".activities.LockScreenActivity" />
+        <activity android:name=".activities.SettingsActivity"  android:exported="false"/>
+        <activity android:name=".activities.tageditor.AlbumTagEditorActivity" android:exported="false"/>
+        <activity android:name=".activities.tageditor.SongTagEditorActivity" android:exported="false"/>
+        <activity android:name=".activities.SupportDevelopmentActivity" android:exported="false"/>
+        <activity android:name=".activities.LicenseActivity" android:exported="false"/>
+        <activity android:name=".activities.PurchaseActivity" android:exported="false"/>
+        <activity android:name=".activities.WhatsNewActivity" android:exported="false"/>
+        <activity android:name=".activities.bugreport.BugReportActivity" android:exported="false"/>
+        <activity android:name=".activities.ShareInstagramStory" android:exported="false"/>
+        <activity android:name=".activities.DriveModeActivity" android:exported="false"/>
+        <activity android:name=".activities.PermissionActivity" android:exported="false"/>
+        <activity android:name=".activities.LockScreenActivity" android:exported="false"/>
         <activity
             android:name="code.name.monkey.retromusic.fragments.backup.RestoreActivity"
             android:exported="true">
@@ -137,11 +137,13 @@
         <activity
             android:name=".appshortcuts.AppShortcutLauncherActivity"
             android:launchMode="singleInstance"
+            android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
             android:name=".activities.saf.SAFGuideActivity"
-            android:theme="@style/Theme.Intro" />
+            android:theme="@style/Theme.Intro"
+            android:exported="false"/>
 
         <activity
             android:name=".cast.ExpandedControlsActivity"
@@ -267,6 +269,15 @@
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
+        <service
+            android:name=".util.NotificationExtender"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE">
+            <intent-filter>
+                <action android:name="com.onesignal.NotificationExtender" />
+            </intent-filter>
+        </service>
+
 
         <meta-data
             android:name="android.max_aspect"

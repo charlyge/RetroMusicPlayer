@@ -39,6 +39,8 @@ import code.name.monkey.retromusic.repository.PlaylistSongsLoader
 import code.name.monkey.retromusic.service.MusicService
 import code.name.monkey.retromusic.util.AppRater
 import code.name.monkey.retromusic.util.PreferenceUtil
+import com.google.android.play.core.review.ReviewManagerFactory
+import com.google.android.play.core.review.testing.FakeReviewManager
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
@@ -63,7 +65,27 @@ class MainActivity : AbsCastActivity(), OnSharedPreferenceChangeListener {
 
         setupNavigationController()
         if (!hasPermissions()) {
-            findNavController(R.id.fragment_container).navigate(R.id.permissionFragment)
+            requestPermissions()
+        }
+        val manager = ReviewManagerFactory.create(this)
+       // val manager = FakeReviewManager(this)
+
+        val request = manager.requestReviewFlow()
+        request.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // We got the ReviewInfo object
+                val reviewInfo = task.result
+                val flow = manager.launchReviewFlow(this, reviewInfo)
+                flow.addOnCompleteListener { _ ->
+                    // The flow has finished. The API does not indicate whether the user
+                    // reviewed or not, or even whether the review dialog was shown. Thus, no
+
+                }
+        } else {
+                // There was some problem, log or handle the error code.
+                //   @ReviewErrorCode val reviewErrorCode = (task.getException() as TaskException).errorCode
+            }
+          // matter the result, we continue our app flow.
         }
     }
 
